@@ -1,0 +1,35 @@
+{
+  "name": "train",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.7.3",
+    "@swc/core": "^1.11.22",
+    "@vitest/coverage-v8": "^3.1.2",
+    "@vitest/ui": "3.1.2",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "eslint-plugin-vitest": "^0.5.4",
+    "prettier": "^3.4.2",
+    "pretty-quick": "^4.1.1",
+    "supertest": "^7.0.0",
+    "swc-loader": "^0.2.6",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.20.0",
+    "unplugin-swc": "^1.5.1",
+    "vite": "^7.0.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.4",
+    "vitest-mock-extended": "^3.1.0"
+  }
+}
