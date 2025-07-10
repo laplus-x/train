@@ -15,6 +15,9 @@ export default defineConfig({
     outputFile: {
       html: '.vitest/report.html',
     },
+    chaiConfig: {
+      truncateThreshold: 0,
+    }
   },
   plugins: [
     swc.vite({

@@ -187,7 +187,8 @@ export class Skyscraper {
    * @returns A solved grid of dimensions N x N
    * @throws If no valid solution is found
    * 
-   * @remarks The puzzle is solved using **backtracking with pruning**:
+   * @remarks 
+   * The puzzle is solved using **backtracking with pruning**:
    * At each grid position (i, j), we try all valid heights (1..N) that maintain uniqueness in the row and column.
    * We validate rows and columns against the visibility clues as soon as they are complete.
    * If a row or column violates its clue, we backtrack.
@@ -209,7 +210,7 @@ export class Skyscraper {
     }
 
     [this.tbs, this.lrs] = this.parse(clues);
-    
+
     this.grid = Array.from({ length: this.size }, () => Array(this.size).fill(0));
     const found = this.place(0, 0)
     if (!found) {
