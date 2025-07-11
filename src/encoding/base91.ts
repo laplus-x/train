@@ -4,7 +4,7 @@
  * @description
  * It is more efficient than Base64 and needs 91 characters to represent the encoded data.
  *
- * The following ASCII charakters are used:
+ * The following ASCII characters are used:
  * `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&()*+,./:;<=>?@[]^_`{|}~'\"`
  * 
  * @remarks
@@ -15,10 +15,10 @@
  *   and every 8 bits are extracted to form the original characters.
  * 
  * Time Complexity: 
- * O(N), where `N` is the length of the input string.
+ * - O(N), where `N` is the length of the input string.
  * 
  * Space Complexity: 
- * O(N)
+ * - O(N)
  */
 export class Base91 {
   /** Bit size of a single byte (8 bits) */
