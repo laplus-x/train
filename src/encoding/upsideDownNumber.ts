@@ -106,49 +106,67 @@ export class UpsideDownNumber {
   }
 
   /**
+   * Returns the floor of the input number divided by 2 using bitwise shift.
+   */
+  public static half(n: number): number {
+    return n >> 1
+  }
+
+  /**
+   * Generates a string that represents the smallest n-digit number with a leading 1 and trailing zeros.
+   */
+  public static pad0(size: number): string {
+    if (size === 0) return ""
+    return "1" + "0".repeat(size - 1)
+  }
+
+  /**
+   * Generates a string of repeated `'9'` characters of the given size.
+   */
+  public static pad9(size: number): string {
+    return "9".repeat(size)
+  }
+
+  /**
    * Get the smallest valid upside-down digit greater than or equal to a given digit.
    */
   public static ceilChar(s: string): string {
-    if (Base5.ALPHA_BET.includes(s)) {
-      return s
-    } else if (s.localeCompare('6') > 0) {
-      return '8'
+    for (const c of Base5.ALPHA_BET) {
+      if (c.localeCompare(s) >= 0) return c
     }
-    return '6'
+    return '8'
   }
 
   /**
    * Transform a prefix into the smallest valid upside-down prefix >= the original string.
    */
   public static ceilPrefix(s: string): string {
-    let result = s
-    for (let i = 0; i < s.length && result.localeCompare(s) <= 0; i++) {
-      result = result.slice(0, i) + this.ceilChar(s.slice(i, i + 1)) + "0".repeat(s.length - i - 1)
+    let result = this.pad0(s.length).split('')
+    for (let i = 0; i < s.length && result.join('').localeCompare(s) < 0; i++) {
+      result[i] = this.ceilChar(s.at(i)!)
     }
-    return result
+    return result.join('')
   }
 
   /**
    * Get the largest valid upside-down digit less than or equal to a given digit.
    */
   public static floorChar(s: string): string {
-    if (Base5.ALPHA_BET.includes(s)) {
-      return s
-    } else if (s.localeCompare('6') < 0) {
-      return '1'
+    for (const c of [...Base5.ALPHA_BET].reverse()) {
+      if (c.localeCompare(s) <= 0) return c
     }
-    return '6'
+    return '1'
   }
 
   /**
    * Transform a prefix into the largest valid upside-down prefix <= the original string.
    */
   public static floorPrefix(s: string): string {
-    let result = s
-    for (let i = 0; i < s.length && result.localeCompare(s) >= 0; i++) {
-      result = result.slice(0, i) + this.floorChar(s.slice(i, i + 1)) + "9".repeat(s.length - i - 1)
+    let result = this.pad9(s.length).split('')
+    for (let i = 0; i < s.length && result.join('').localeCompare(s) > 0; i++) {
+      result[i] = this.floorChar(s.at(i)!)
     }
-    return result
+    return result.join('')
   }
 
   /**
@@ -160,24 +178,21 @@ export class UpsideDownNumber {
   public static upsidedown(pre: string, mid?: string) {
     const suf = [...pre].reverse()
       .map(i => this.LOOKUP[i])
-      .join('')
-    return mid ? pre.concat(mid).concat(suf) : pre.concat(suf)
+    return mid ? pre.concat(mid).concat(...suf) : pre.concat(...suf)
   }
 
   /**
    * Returns the smallest valid upside-down number ≥ given input.
    */
   public static start(s: string): string {
-    const pre = this.ceilPrefix(s.slice(0, s.length / 2))
-
     const even = (s: string, pre: string): string => {
       const result = this.upsidedown(pre)
       if (result.length > s.length || result.localeCompare(s) >= 0) {
         return result
       }
-      const max = "9".repeat(pre.length)
+      const max = this.pad9(pre.length)
       if (pre === max) {
-        const v = "1" + "0".repeat(pre.length - 1)
+        const v = this.pad0(pre.length)
         return odd(s, v)
       }
       const v = Base5.encode(pre)
@@ -193,15 +208,16 @@ export class UpsideDownNumber {
           return result
         }
       }
-      const max = "9".repeat(pre.length)
+      const max = this.pad9(pre.length)
       if (s.length === 1 || pre === max) {
-        const v = "1" + "0".repeat(pre.length)
+        const v = this.pad0(pre.length + 1)
         return even(s, v)
       }
       const v = Base5.encode(pre)
       return odd(s, Base5.decode(v + 1))
     }
 
+    const pre = this.ceilPrefix(s.slice(0, this.half(s.length)))
     return s.length % 2 === 0 ? even(s, pre) : odd(s, pre)
   }
 
@@ -209,16 +225,14 @@ export class UpsideDownNumber {
     * Returns the largest valid upside-down number ≤ given input.
     */
   public static end(s: string): string {
-    const pre = this.floorPrefix(s.slice(0, s.length / 2))
-
     const even = (s: string, pre: string): string => {
       const result = this.upsidedown(pre)
       if (result.length < s.length || result.localeCompare(s) <= 0) {
         return result
       }
-      const min = "1" + "0".repeat(pre.length - 1)
+      const min = this.pad0(pre.length)
       if (pre === min) {
-        const v = "9".repeat(pre.length - 1)
+        const v = this.pad9(pre.length - 1)
         return odd(s, v)
       }
       const v = Base5.encode(pre)
@@ -234,15 +248,16 @@ export class UpsideDownNumber {
           return result
         }
       }
-      const min = "1" + "0".repeat(pre.length - 1)
-      if (s.length === 1 || pre === min) {
-        const v = "9".repeat(pre.length)
+      const min = this.pad0(pre.length)
+      if (pre === min) {
+        const v = this.pad9(pre.length)
         return even(s, v)
       }
       const v = Base5.encode(pre)
       return odd(s, Base5.decode(v - 1))
     }
 
+    const pre = this.floorPrefix(s.slice(0, this.half(s.length)))
     return s.length % 2 === 0 ? even(s, pre) : odd(s, pre)
   }
 
@@ -266,7 +281,7 @@ export class UpsideDownNumber {
   public static count(min: string, max: string): number {
     if (min.length === 1) return this.countMiddle(min, max)
 
-    const len = Math.floor(min.length / 2)
+    const len = this.half(min.length)
     const n1 = Base5.encode(min.slice(0, len))
     const n2 = Base5.encode(max.slice(0, len))
 
@@ -274,7 +289,7 @@ export class UpsideDownNumber {
     else if (n1 === n2) return 1
 
     const middle_cnt = 3
-    const multiplier = min.length % 2 === 0 ? 1 : middle_cnt
+    const multiplier = middle_cnt ** (min.length & 1)
     const n3 = min.length % 2 === 0 ? 0 : middle_cnt - this.countMiddle(min.slice(len, len + 1), max.slice(len, len + 1))
     return (n2 - n1 + 1) * multiplier - n3
   }
@@ -296,9 +311,9 @@ export class UpsideDownNumber {
       return this.count(start, end)
     }
 
-    let result = this.count(start, "9".repeat(start.length)) + this.count("1" + "0".repeat(end.length - 1), end)
+    let result = this.count(start, this.pad9(start.length)) + this.count(this.pad0(end.length), end)
     for (let n = start.length + 1; n < end.length; n++) {
-      result += this.count("1" + "0".repeat(n - 1), "9".repeat(n))
+      result += this.count(this.pad0(n), this.pad9(n))
     }
     return result
   }

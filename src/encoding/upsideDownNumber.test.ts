@@ -23,6 +23,7 @@ describe("Base5", () => {
 
 describe("UpsideDownNumber", () => {
     it.each([
+        { data: "2", expected: "6" },
         { data: "5", expected: "6" },
         { data: "7", expected: "8" },
         { data: "9", expected: "9" },
@@ -97,16 +98,9 @@ describe("UpsideDownNumber", () => {
         expect(actual).toBeDefined()
         expect(actual).toEqual(expected)
     })
-    it.each([
-        // { min: "0", max: "10", expected: 3 },
-        // { min: "10", max: "100", expected: 4 },
-        // { min: "100", max: "999", expected: 12 },
-        // { min: "1000", max: "9999", expected: 20 },
-        // { min: "10000", max: "99999", expected: 60 },
-        // { min: "100000", max: "999999", expected: 100 },
-        // { min: "1000000", max: "9999999", expected: 300 },
-        // { min: "10000000", max: "99999999", expected: 500 },
 
+    it.each([
+        { min: "0", max: "999", expected: 19 },
         { min: "8", max: "0", expected: 0 },
         { min: "6", max: "25", expected: 2 },
         { min: "0", max: "1000", expected: 19 },
