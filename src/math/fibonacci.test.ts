@@ -10,7 +10,7 @@ describe("Fibonacci", () => {
         { data: 5, expected: 5 },
         { data: -6, expected: -8 },
     ])("should solve return $expected when input is $data", ({ data, expected }) => {
-        const actual = Fibonacci.solve5(data)
+        const actual = Fibonacci.solve3(data)
         expect(actual).toBeDefined()
         expect(actual).toEqual(expected)
     });

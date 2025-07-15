@@ -104,20 +104,20 @@ export class Fibonacci {
     if (n < 0) return (-1) ** (-n + 1) * this.solve3(-n)
     else if (n < 2) return n;
 
-    const generator = function* () {
+    const generator = function* (n: number) {
       let a = 0;
       let b = 1;
 
-      while (true) {
+      for (let i = 0; i <= n; i++) {
         yield a;
         [a, b] = [b, a + b];
       }
     }
 
-    const g = generator()
     let result = 0
-    for (let i = 0; i <= n; i++) {
-      result = g.next().value!
+    const g = generator(n)
+    for (const v of g) {
+      result = v
     }
     return result
   }
