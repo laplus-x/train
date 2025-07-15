@@ -159,20 +159,16 @@ export class NumberString {
     }
 
     public toString(): string {
-        return this.format(this.value, this.sign, this.exp)
-    }
+        if (this.value === '0' || this.value === 'Infinity') return this.value
 
-    private format(value: string, sign: number, exp: number) {
-        if (value === '0' || value === 'Infinity') return value
-
-        let result = value
-        if (exp > 0) {
-            result += '0'.repeat(exp)
-        } else if (exp < 0) {
-            result = result.padStart(-exp + 1, "0")
-            result = result.slice(0, exp) + "." + result.slice(exp)
+        let result = this.value
+        if (this.exp > 0) {
+            result += '0'.repeat(this.exp)
+        } else if (this.exp < 0) {
+            result = result.padStart(-this.exp + 1, "0")
+            result = result.slice(0, this.exp) + "." + result.slice(this.exp)
         }
-        const prefix = sign ? '-' : ''
+        const prefix = this.sign ? '-' : ''
         return prefix + result
     }
 
