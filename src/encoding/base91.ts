@@ -121,7 +121,7 @@ export class Base91 {
       c = b & this.bitmask(this.CHAR_SIZE)
       result += this.ENC_LOOKUP[c % this.SIZE]
 
-      if (n >= this.BYTE_SIZE || c >= this.SIZE) {
+      if (n > (this.CHAR_SIZE >> 1) + 1 || c >= this.SIZE) {
         result += this.ENC_LOOKUP[Math.trunc(c / this.SIZE)]
       }
     }
